@@ -1,0 +1,23 @@
+# --- Java & Maven ---
+target/
+*.jar
+*.class
+.mvn/
+mvnw
+mvnw.cmd
+
+# --- Node.js & React ---
+node_modules/
+dist/
+build/
+.env.local
+
+# --- IDEs ---
+.vscode/
+.idea/
+*.iml
+.DS_Store
+
+# --- OS & Logs ---
+*.log
+.env
