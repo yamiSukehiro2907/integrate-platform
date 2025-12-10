@@ -1,0 +1,26 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: core-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/integrate_core
+    username: postgres
+    password: "Vimal2907@"
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  ai:
+    vertex:
+      ai:
+        gemini:
+          project-id: placeholder-project-id
+          location: us-central1
