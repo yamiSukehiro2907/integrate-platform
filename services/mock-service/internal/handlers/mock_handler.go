@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/integrate/mock-service/internal/db"
@@ -30,4 +31,9 @@ func HandleMockRequest(c *gin.Context) {
 		"requested_path": path,
 		"spec_found":     true,
 	})
+}
+
+func generateMockResponse(path string) map[string]interface{} {
+	data := make(map[string]interface{})
+	path = strings.ToLower(path)
 }

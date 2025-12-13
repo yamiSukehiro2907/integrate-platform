@@ -3,7 +3,6 @@ package com.integrate.core.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -28,15 +27,11 @@ public class ProjectMember {
     private Project project;
 
     @Column(name = "user_id", nullable = false)
-    private String userId;
+    private UUID userId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ProjectRole projectRole;
+    @Column(nullable = false, length = 20)
+    private String projectRole;
 
     @CreationTimestamp
     private LocalDateTime joinedAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 }

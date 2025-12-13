@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,23 +21,20 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "owner_id", nullable = false)
+    private UUID ownerId;
+
+    @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(length = 1000)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "owner_id", nullable = false)
-    private String ownerId;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contract> contracts;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<Contract> contracts = new ArrayList<>();
-
-
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<ProjectMember> projectMembers = new ArrayList<>();
+    private List<ProjectMember> members;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -46,14 +42,13 @@ public class Project {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-
-    public void addMember(String userId, ProjectRole projectRole) {
+    public void addMember(UUID userId, String role) {
         ProjectMember member = ProjectMember.builder()
                 .project(this)
-                .projectRole(projectRole)
                 .userId(userId)
+                .projectRole(role)
                 .build();
-        this.projectMembers.add(member);
-    }
 
+        this.members.add(member);
+    }
 }

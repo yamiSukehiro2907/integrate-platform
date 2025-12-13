@@ -1,4 +1,4 @@
-package com.integrate.core.domain;
+package com.integrate.core.enums;
 
 public enum ContractStatus {
     DRAFT,

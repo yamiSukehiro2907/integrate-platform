@@ -1,17 +1,18 @@
 package com.integrate.core.domain;
 
+import com.integrate.core.enums.ContractStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "contracts")
+@Table(name = "contracts", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"project_id", "name"})
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -31,21 +32,16 @@ public class Contract {
     @Column(nullable = false)
     private ContractStatus status;
 
-    @Column(nullable = false)
-    private int version;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb", nullable = false)
-    private String openApiSpec;
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    /// so that only required ones should be loaded to memory
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ContractVersion> versions;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 }
